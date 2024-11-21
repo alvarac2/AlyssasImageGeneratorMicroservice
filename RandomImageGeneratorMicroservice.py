@@ -51,14 +51,12 @@ def fetch_potd(cur_date):
     }
 
     response = requests.get(url=POTD_API, params=params)
-    print("POTD API Response (step 1):", response.json())  # Debug print
 
     if response.status_code == 200:
         data = response.json()
         try:
             # Extract the filename of the image
             filename = data["query"]["pages"][0]["images"][0]["title"]
-            print("Extracted filename:", filename)  # Debug print
 
             # Use the filename to get the image URL
             return fetch_image_src(filename)
@@ -82,7 +80,6 @@ def fetch_image_src(filename):
     }
 
     response = requests.get(url=POTD_API, params=params)
-    print("POTD Image Info API Response:", response.json())  # Debug print
 
     if response.status_code == 200:
         data = response.json()
@@ -90,7 +87,6 @@ def fetch_image_src(filename):
             # Extract the URL of the image
             page = next(iter(data["query"]["pages"].values()))
             image_url = page["imageinfo"][0]["url"]
-            print("Extracted image URL:", image_url)  # Debug print
             return image_url
         except (KeyError, IndexError) as e:
             print("Error extracting image URL:", str(e))
